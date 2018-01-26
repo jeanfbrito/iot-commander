@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  data: 
+  timestamp: 2018-01-26 19:30:13
+  device: one
+
+two:
+  data: 
+  timestamp: 2018-01-26 19:30:13
+  device: two
