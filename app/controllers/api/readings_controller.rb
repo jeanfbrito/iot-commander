@@ -1,25 +1,31 @@
-class ReadingsController < ApplicationController
-  before_action :set_reading, only: [:show, :edit, :update, :destroy]
+class Api::ReadingsController < ApplicationController
+  skip_before_action :verify_authenticity_token
+  #before_action :set_reading, only: [:show, :edit, :update, :destroy]
+  
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   # POST /readings
   # POST /readings.json
   def create
-    @reading= @device.readings.build(reading_params)
+    device = Device.find_by(uid: params[:reading][:uid])
+    #convert from epoch time to datetime
+    params[:reading][:timestamp] = Time.at(reading_params[:timestamp])
 
-    respond_to do |format|
-      if @reading.save
-        format.html { redirect_to [@vehicle, :refuellings], notice: 'Refuelling was successfully created.' }
-        format.json { render :show, status: :created, location: @refuelling }
-      else
-        format.html { render :new }
-        format.json { render json: @refuelling.errors, status: :unprocessable_entity }
-      end
+    if reading = device.readings.create(reading_params)
+      render json: reading, status: :created
+    else
+      render json: reading.errors, status: :unprocessable_entity
     end
   end
 
   private
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def reading_params
-      params.require(:reading).permit(:data, :timestamp, :device_id)
-    end
+
+  def record_not_found
+    render json: { 'errors': 'Não encontrado' }, status: :not_found
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def reading_params
+    params.require(:reading).permit(:data, :timestamp)
+  end
 end
