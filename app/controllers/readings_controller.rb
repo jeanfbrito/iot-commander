@@ -5,7 +5,7 @@ class ReadingsController < ApplicationController
   # GET /readings
   # GET /readings.json
   def index
-    @readings = Reading.all
+    @readings = Reading.last(200)
   end
 
   # GET /readings/1
