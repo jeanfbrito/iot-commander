@@ -7,10 +7,10 @@ class Api::ReadingsController < ApplicationController
   # POST /readings
   # POST /readings.json
   def create
-    device = Device.find_by(uid: params[:reading][:uid])
-    #convert from epoch time to datetime
-    params[:reading][:timestamp] = Time.at(reading_params[:timestamp])
-
+    device = Device.find_by(uid: params[:uid])
+    #convert from epoch time to datetime 
+    puts reading_params[:data]
+    params[:timestamp] = Time.at(reading_params[:timestamp])
     if reading = device.readings.create(reading_params)
       render json: reading, status: :created
     else
@@ -26,6 +26,6 @@ class Api::ReadingsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def reading_params
-    params.require(:reading).permit(:data, :timestamp)
+    params.permit(:data, :timestamp)
   end
 end
