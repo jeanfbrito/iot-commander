@@ -5,7 +5,7 @@ class ReadingsController < ApplicationController
   # GET /readings
   # GET /readings.json
   def index
-    @readings = Reading.last(200)
+    @readings = @device.readings.last(200)
   end
 
   # GET /readings/1
