@@ -8,10 +8,10 @@ class Api::ReadingsController < ApplicationController
   # POST /readings.json
   def create
     device = Device.find_by(uid: params[:uid])
-    #convert from epoch time to datetime 
-    puts reading_params[:data]
-    params[:timestamp] = Time.at(reading_params[:timestamp])
-    if reading = device.readings.create(reading_params)
+    reading = device.readings.build(reading_params)
+    reading.data = JSON.parse(reading_params[:data])
+    reading.timestamp = Time.at(reading_params[:timestamp])
+    if reading.save
       render json: reading, status: :created
     else
       render json: reading.errors, status: :unprocessable_entity
