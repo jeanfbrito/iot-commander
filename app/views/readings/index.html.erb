@@ -1,8 +1,4 @@
 <div class="page-header">
-  <%= link_to new_reading_path, class: 'btn btn-primary' do %>
-    <span class="glyphicon glyphicon-plus"></span>
-    New Reading
-  <% end %>
   <h1>Listing readings</h1>
 </div>
 
@@ -12,9 +8,6 @@
       <tr>
             <th>Data</th>
             <th>Timestamp</th>
-            <th>Device</th>
-            <th></th>
-        <th></th>
         <th></th>
       </tr>
     </thead>
@@ -23,10 +16,7 @@
       <%= content_tag_for(:tr, @readings) do |reading| %>
             <td><%= reading.data %></td>
             <td><%= reading.timestamp %></td>
-            <td><%= reading.device %></td>
-            <td><%= link_to 'Show', reading %></td>
-        <td><%= link_to 'Edit', edit_reading_path(reading) %></td>
-        <td><%= link_to 'Destroy', reading, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Destroy', device_reading_path(@device, reading), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       <% end %>
     </tbody>
   </table>

@@ -1,5 +1,6 @@
 class ReadingsController < ApplicationController
   before_action :set_reading, only: [:show, :edit, :update, :destroy]
+  before_action :find_device
 
   # GET /readings
   # GET /readings.json
@@ -56,7 +57,7 @@ class ReadingsController < ApplicationController
   def destroy
     @reading.destroy
     respond_to do |format|
-      format.html { redirect_to readings_url, notice: 'Reading was successfully destroyed.' }
+      format.html { redirect_to device_readings_url(@device), notice: 'Reading was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -71,4 +72,9 @@ class ReadingsController < ApplicationController
     def reading_params
       params.require(:reading).permit(:data, :timestamp, :device_id)
     end
+
+    def find_device
+        @device = Device.find(params[:device_id])
+    end
+
 end
